@@ -213,7 +213,7 @@ input:focus,select:focus{border-color:var(--green)}
     </div>
     <div class="intro-boxes">
       <div class="intro-box"><h4>🎯 Partie 1 — DISC</h4><p>24 blocs de descripteurs pour identifier votre style comportemental naturel. (~10 min)</p></div>
-      <div class="intro-box"><h4>💡 Partie 2 — Valeurs</h4><p>21 paires d'affirmations pour révéler vos motivations profondes à travers 7 dimensions. (~5 min)</p></div>
+      <div class="intro-box"><h4>💡 Partie 2 — Valeurs</h4><p>42 paires d'affirmations pour révéler vos motivations profondes à travers 7 dimensions. (~10 min)</p></div>
     </div>
     <div class="rgpd-wrap">
       <label class="rgpd-label">
@@ -285,7 +285,7 @@ input:focus,select:focus{border-color:var(--green)}
   <div class="instr-card">
     <h3>📋 Mode d'emploi</h3>
     <ul class="instr-steps">
-      <li><div class="step-n">1</div><div>Vous allez voir <strong>21 paires d'affirmations</strong>, côte à côte.</div></li>
+      <li><div class="step-n">1</div><div>Vous allez voir <strong>42 paires d'affirmations</strong>, côte à côte.</div></li>
       <li><div class="step-n">2</div><div>Pour chaque paire, cliquez sur celle qui vous ressemble le <strong>plus</strong>.</div></li>
       <li><div class="step-n">3</div><div>Répondez en pensant à <strong>qui vous êtes vraiment</strong> — pas à qui vous aimeriez être.</div></li>
       <li><div class="step-n">4</div><div>Faites confiance à votre <strong>première réaction</strong>, elle est souvent la plus juste.</div></li>
@@ -300,7 +300,7 @@ input:focus,select:focus{border-color:var(--green)}
   <div class="disc-screen-wrap">
     <div class="disc-progress-top">
       <div class="disc-prog-label">
-        <span>Paire <span id="val-cur">1</span> sur 21</span>
+        <span>Paire <span id="val-cur">1</span> sur 42</span>
         <span id="val-pct-lbl">0% complété</span>
       </div>
       <div class="disc-prog-bar"><div class="disc-prog-fill" id="val-prog-fill" style="width:0%"></div></div>
@@ -432,29 +432,71 @@ const VALUES_ITEMS = [
 
 const VAL_NAMES = {TH:"Cognitif",UT:"Utilitaire",ES:"Esthétique",SO:"Social",IN:"Individualiste",TR:"Traditionaliste",PO:"Politique"};
 
-// DATA — 21 PAIRS (choix forcé, 7 dimensions × 6 apparitions chacune, 21 combinaisons uniques)
+// DATA — 42 PAIRS (choix forcé, 7 dimensions × 12 apparitions chacune, 21 combinaisons × 2)
 const PAIRS_DATA = [
+  // TH vs UT (×2)
   {id:1,  a:{d:'TH',itemId:1},  b:{d:'UT',itemId:2}},
-  {id:2,  a:{d:'TH',itemId:8},  b:{d:'ES',itemId:3}},
-  {id:3,  a:{d:'TH',itemId:15}, b:{d:'SO',itemId:4}},
-  {id:4,  a:{d:'TH',itemId:22}, b:{d:'IN',itemId:5}},
-  {id:5,  a:{d:'TH',itemId:29}, b:{d:'TR',itemId:6}},
-  {id:6,  a:{d:'TH',itemId:36}, b:{d:'PO',itemId:7}},
-  {id:7,  a:{d:'UT',itemId:9},  b:{d:'ES',itemId:10}},
-  {id:8,  a:{d:'UT',itemId:16}, b:{d:'SO',itemId:11}},
-  {id:9,  a:{d:'UT',itemId:23}, b:{d:'IN',itemId:12}},
-  {id:10, a:{d:'UT',itemId:30}, b:{d:'TR',itemId:13}},
-  {id:11, a:{d:'UT',itemId:37}, b:{d:'PO',itemId:14}},
-  {id:12, a:{d:'ES',itemId:17}, b:{d:'SO',itemId:18}},
-  {id:13, a:{d:'ES',itemId:24}, b:{d:'IN',itemId:19}},
-  {id:14, a:{d:'ES',itemId:31}, b:{d:'TR',itemId:20}},
-  {id:15, a:{d:'ES',itemId:38}, b:{d:'PO',itemId:21}},
-  {id:16, a:{d:'SO',itemId:25}, b:{d:'IN',itemId:26}},
-  {id:17, a:{d:'SO',itemId:32}, b:{d:'TR',itemId:27}},
-  {id:18, a:{d:'SO',itemId:39}, b:{d:'PO',itemId:28}},
-  {id:19, a:{d:'IN',itemId:33}, b:{d:'TR',itemId:34}},
-  {id:20, a:{d:'IN',itemId:40}, b:{d:'PO',itemId:35}},
-  {id:21, a:{d:'TR',itemId:41}, b:{d:'PO',itemId:42}},
+  {id:2,  a:{d:'TH',itemId:22}, b:{d:'UT',itemId:30}},
+  // TH vs ES (×2)
+  {id:3,  a:{d:'TH',itemId:8},  b:{d:'ES',itemId:3}},
+  {id:4,  a:{d:'TH',itemId:29}, b:{d:'ES',itemId:31}},
+  // TH vs SO (×2)
+  {id:5,  a:{d:'TH',itemId:15}, b:{d:'SO',itemId:4}},
+  {id:6,  a:{d:'TH',itemId:36}, b:{d:'SO',itemId:25}},
+  // TH vs IN (×2)
+  {id:7,  a:{d:'TH',itemId:1},  b:{d:'IN',itemId:5}},
+  {id:8,  a:{d:'TH',itemId:29}, b:{d:'IN',itemId:19}},
+  // TH vs TR (×2)
+  {id:9,  a:{d:'TH',itemId:22}, b:{d:'TR',itemId:6}},
+  {id:10, a:{d:'TH',itemId:36}, b:{d:'TR',itemId:34}},
+  // TH vs PO (×2)
+  {id:11, a:{d:'TH',itemId:8},  b:{d:'PO',itemId:7}},
+  {id:12, a:{d:'TH',itemId:15}, b:{d:'PO',itemId:28}},
+  // UT vs ES (×2)
+  {id:13, a:{d:'UT',itemId:9},  b:{d:'ES',itemId:10}},
+  {id:14, a:{d:'UT',itemId:37}, b:{d:'ES',itemId:38}},
+  // UT vs SO (×2)
+  {id:15, a:{d:'UT',itemId:16}, b:{d:'SO',itemId:11}},
+  {id:16, a:{d:'UT',itemId:23}, b:{d:'SO',itemId:39}},
+  // UT vs IN (×2)
+  {id:17, a:{d:'UT',itemId:2},  b:{d:'IN',itemId:12}},
+  {id:18, a:{d:'UT',itemId:30}, b:{d:'IN',itemId:40}},
+  // UT vs TR (×2)
+  {id:19, a:{d:'UT',itemId:9},  b:{d:'TR',itemId:13}},
+  {id:20, a:{d:'UT',itemId:37}, b:{d:'TR',itemId:41}},
+  // UT vs PO (×2)
+  {id:21, a:{d:'UT',itemId:16}, b:{d:'PO',itemId:14}},
+  {id:22, a:{d:'UT',itemId:23}, b:{d:'PO',itemId:35}},
+  // ES vs SO (×2)
+  {id:23, a:{d:'ES',itemId:17}, b:{d:'SO',itemId:18}},
+  {id:24, a:{d:'ES',itemId:24}, b:{d:'SO',itemId:32}},
+  // ES vs IN (×2)
+  {id:25, a:{d:'ES',itemId:3},  b:{d:'IN',itemId:19}},
+  {id:26, a:{d:'ES',itemId:31}, b:{d:'IN',itemId:33}},
+  // ES vs TR (×2)
+  {id:27, a:{d:'ES',itemId:10}, b:{d:'TR',itemId:20}},
+  {id:28, a:{d:'ES',itemId:38}, b:{d:'TR',itemId:27}},
+  // ES vs PO (×2)
+  {id:29, a:{d:'ES',itemId:17}, b:{d:'PO',itemId:21}},
+  {id:30, a:{d:'ES',itemId:24}, b:{d:'PO',itemId:42}},
+  // SO vs IN (×2)
+  {id:31, a:{d:'SO',itemId:4},  b:{d:'IN',itemId:26}},
+  {id:32, a:{d:'SO',itemId:11}, b:{d:'IN',itemId:40}},
+  // SO vs TR (×2)
+  {id:33, a:{d:'SO',itemId:25}, b:{d:'TR',itemId:27}},
+  {id:34, a:{d:'SO',itemId:39}, b:{d:'TR',itemId:34}},
+  // SO vs PO (×2)
+  {id:35, a:{d:'SO',itemId:18}, b:{d:'PO',itemId:28}},
+  {id:36, a:{d:'SO',itemId:32}, b:{d:'PO',itemId:35}},
+  // IN vs TR (×2)
+  {id:37, a:{d:'IN',itemId:5},  b:{d:'TR',itemId:6}},
+  {id:38, a:{d:'IN',itemId:33}, b:{d:'TR',itemId:41}},
+  // IN vs PO (×2)
+  {id:39, a:{d:'IN',itemId:12}, b:{d:'PO',itemId:14}},
+  {id:40, a:{d:'IN',itemId:26}, b:{d:'PO',itemId:42}},
+  // TR vs PO (×2)
+  {id:41, a:{d:'TR',itemId:13}, b:{d:'PO',itemId:21}},
+  {id:42, a:{d:'TR',itemId:20}, b:{d:'PO',itemId:7}},
 ];
 const DISC_NAMES = {D:"Dominant (Rouge)",I:"Influent (Jaune)",S:"Stable (Vert)",C:"Conforme (Bleu)"};
 
@@ -627,17 +669,17 @@ function renderPair(idx){
   const leftItem  = VALUES_ITEMS.find(i => i.id === left.itemId);
   const rightItem = VALUES_ITEMS.find(i => i.id === right.itemId);
   const chosen  = pairAns[pair.id];
-  const pct     = Math.round(idx / 21 * 100);
+  const pct     = Math.round(idx / 42 * 100);
 
   document.getElementById('val-cur').textContent      = idx + 1;
   document.getElementById('val-pct-lbl').textContent  = pct + '% complété';
   document.getElementById('val-prog-fill').style.width = pct + '%';
   document.getElementById('val-btn-prev').disabled    = (idx === 0);
-  document.getElementById('val-btn-next').textContent = (idx === 20) ? 'Terminer le diagnostic →' : 'Suivant →';
+  document.getElementById('val-btn-next').textContent = (idx === 41) ? 'Terminer le diagnostic →' : 'Suivant →';
   document.getElementById('val-err').classList.remove('show');
 
   const html = `
-    <div class="disc-card-title">Paire ${idx + 1} sur 21</div>
+    <div class="disc-card-title">Paire ${idx + 1} sur 42</div>
     <div class="disc-card-sub">Cliquez sur l'affirmation qui vous ressemble le <strong>plus</strong>.</div>
     <div class="pair-wrap">
       <div class="pair-card${chosen === 'left' ? ' selected' : ''}" onclick="selPair(${pair.id},'left')">
@@ -655,7 +697,7 @@ function selPair(pairId, side){
   pairAns[pairId] = side;
   renderPair(currentValIdx);
   const done = Object.values(pairAns).filter(v => v !== null).length;
-  const pct  = Math.round(60 + done / 21 * 35);
+  const pct  = Math.round(60 + done / 42 * 35);
   document.getElementById('prog').style.width = pct + '%';
 }
 
@@ -666,7 +708,7 @@ function nextVal(){
     return;
   }
   document.getElementById('val-err').classList.remove('show');
-  if(currentValIdx === 20){
+  if(currentValIdx === 41){
     submitDiagnostic();
   } else {
     currentValIdx++;
@@ -708,7 +750,7 @@ function computeScores(){
     vsc[winner.d]++;
   });
   const vPct={};
-  Object.keys(vsc).forEach(k => vPct[k] = Math.min(99, Math.round(vsc[k] / 6 * 100)));
+  Object.keys(vsc).forEach(k => vPct[k] = Math.min(99, Math.round(vsc[k] / 12 * 100)));
 
   return {dPct, vPct, dsc, vsc};
 }
