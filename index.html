@@ -881,10 +881,10 @@ async function submitDiagnostic(){
   const vSorted = Object.entries(vPct).sort((a,b)=>b[1]-a[1]);
   const vSorted2= Object.entries(vPct2).sort((a,b)=>b[1]-a[1]);
 
-  // Score Révélys — moyenne équilibrée paires + Likert (50/50)
+  // Score Révélys — moyenne simple paires + Likert
   const vPctC={};
   Object.keys(vPct).forEach(k => {
-    vPctC[k] = Math.min(99, Math.round(vPct[k] * 0.5 + vPct2[k] * 0.5));
+    vPctC[k] = Math.min(99, Math.round((vPct[k] + vPct2[k]) / 2));
   });
   const vSortedC = Object.entries(vPctC).sort((a,b)=>b[1]-a[1]);
   const date = new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
