@@ -880,6 +880,13 @@ async function submitDiagnostic(){
   const sorted  = Object.entries(dPct).sort((a,b)=>b[1]-a[1]);
   const vSorted = Object.entries(vPct).sort((a,b)=>b[1]-a[1]);
   const vSorted2= Object.entries(vPct2).sort((a,b)=>b[1]-a[1]);
+
+  // Score Révélys — moyenne équilibrée paires + Likert (50/50)
+  const vPctC={};
+  Object.keys(vPct).forEach(k => {
+    vPctC[k] = Math.min(99, Math.round(vPct[k] * 0.5 + vPct2[k] * 0.5));
+  });
+  const vSortedC = Object.entries(vPctC).sort((a,b)=>b[1]-a[1]);
   const date = new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
 
   const payload = {
@@ -916,6 +923,15 @@ async function submitDiagnostic(){
     'Traditionaliste (1-6)': vPct2.TR+'%',
     'Politique (1-6)':       vPct2.PO+'%',
     'Classement valeurs (1-6)': vSorted2.map((([k,v],i)=>`${i+1}. ${VAL_NAMES[k]} (${v}%)`)).join(' | '),
+    '--- SCORE RÉVÉLYS (sur 100%) ---': '---',
+    'Cognitif (Révélys)':        vPctC.TH+'%',
+    'Utilitaire (Révélys)':      vPctC.UT+'%',
+    'Esthétique (Révélys)':      vPctC.ES+'%',
+    'Social (Révélys)':          vPctC.SO+'%',
+    'Individualiste (Révélys)':  vPctC.IN+'%',
+    'Traditionaliste (Révélys)': vPctC.TR+'%',
+    'Politique (Révélys)':       vPctC.PO+'%',
+    'Classement valeurs (Révélys)': vSortedC.map((([k,v],i)=>`${i+1}. ${VAL_NAMES[k]} (${v}%)`)).join(' | '),
     'Réponses DISC': DISC_BLOCKS.map(b => {
       const a = discAns[b.id];
       return `B${b.id}:+${a.most}-${a.least}`;
