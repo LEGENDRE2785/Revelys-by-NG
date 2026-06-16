@@ -542,6 +542,57 @@ const PAIRS_DATA = [
 const DISC_NAMES = {D:"Dominant (Rouge)",I:"Influent (Jaune)",S:"Stable (Vert)",C:"Conforme (Bleu)"};
 
 // ================================================================
+// VERSIONS B — 2e occurrence de chaque affirmation dans les paires
+// ================================================================
+const VALUES_ITEMS_B = {
+  1:  "Avant d'agir, j'ai besoin de comprendre le sujet en profondeur — pas juste en surface.",
+  2:  "Ce qui compte pour moi, c'est ce qu'une action produit réellement.",
+  3:  "La dimension esthétique de mon environnement n'est pas anodine — elle compte vraiment dans mon quotidien.",
+  4:  "Une journée où je n'ai aidé personne me donne l'impression de n'avoir pas vraiment accompli quelque chose.",
+  5:  "Je renonce à une opportunité plutôt que de trahir ce que je suis profondément.",
+  6:  "Sans cadre commun ni règles partagées, la vie en collectivité perd sa cohérence.",
+  7:  "Être pleinement investi(e) dans quelque chose sans pouvoir décider me pèse.",
+  8:  "Passer trop de temps à analyser au détriment de l'action me semble contre-productif.",
+  9:  "Si je ne perçois pas l'utilité concrète de ce que je fais, j'ai du mal à rester mobilisé(e).",
+  10: "Mon regard se pose naturellement sur ce qui est beau ou bien agencé, même dans les moments les plus anodins.",
+  11: "Tisser des liens et rendre service — même à des inconnus — me procure une vraie satisfaction.",
+  12: "Je fais rarement les choses comme tout le monde, et ça ne me gêne pas — bien au contraire.",
+  13: "Quand une pratique a fait ses preuves dans le temps, je lui fais confiance plutôt que d'en inventer une nouvelle.",
+  14: "Ce qui me motive, c'est que ce que je dis ou décide soit réellement pris en compte.",
+  15: "Il ne m'est pas nécessaire d'avoir toutes les réponses pour me lancer.",
+  16: "Je m'investis plus facilement quand je vois clairement ce que l'action va produire pour moi.",
+  17: "Le désordre visuel autour de moi ne m'est pas indifférent — il me pèse vraiment.",
+  18: "Je sens souvent que quelque chose ne va pas chez une personne, sans qu'elle ait besoin de me le dire.",
+  19: "La pensée unanime m'incite à chercher l'angle que personne n'a considéré.",
+  20: "Je préfère un environnement stable et prévisible à un monde en recomposition constante.",
+  21: "Participer sans peser sur le résultat final ne me suffit pas — j'ai besoin que mon impact soit réel.",
+  22: "Je ne me contente pas d'une seule lecture des choses — je cherche à croiser les points de vue avant de conclure.",
+  23: "Sans horizon concret, mes efforts me semblent vite sans sens.",
+  24: "Une présentation soignée m'attire — une présentation bâclée me coupe l'envie, même si le fond est bon.",
+  25: "Contribuer au bien-être des autres est l'une des choses qui donnent le plus de sens à ce que je fais.",
+  26: "Ce qui sort de l'ordinaire capte mon attention bien plus que ce qui suit les codes établis.",
+  27: "Savoir qui fait quoi et ce qu'on attend de moi me permet de fonctionner sereinement.",
+  28: "Face à une situation sans leadership clair, c'est presque instinctif chez moi de prendre l'initiative.",
+  29: "Dès qu'un sujet m'accroche, j'ai du mal à m'arrêter à ce que je sais déjà — je veux en savoir plus.",
+  30: "Même quand mes méthodes marchent, je cherche à les améliorer pour être encore plus efficace.",
+  31: "Je capte des détails visuels ou sensoriels que mon entourage laisse souvent passer.",
+  32: "J'aide naturellement, sans me demander ce que j'y gagne — c'est plus fort que moi.",
+  33: "L'approbation du groupe pèse moins pour moi que la cohérence avec moi-même.",
+  34: "Les grandes structures qui ont traversé le temps méritent selon moi respect et considération.",
+  35: "Entre influencer une décision et la prendre moi-même, je choisis toujours de décider.",
+  36: "Les échanges sur des sujets de fond, même sans débouché concret, me stimulent réellement.",
+  37: "Une réponse applicable maintenant vaut mieux pour moi qu'une solution parfaite qui se fait attendre.",
+  38: "Pour moi, ce qui est utile doit aussi être beau — l'un ne remplace pas l'autre.",
+  39: "Quand ceux qui m'entourent vont bien, je me sens mieux — et l'inverse aussi.",
+  40: "Mon parcours ne ressemble pas souvent aux sentiers battus — et ça me convient parfaitement.",
+  41: "Un changement imposé sans délai d'adaptation me met mal à l'aise — j'ai besoin de temps pour intégrer.",
+  42: "Être la référence vers laquelle les autres se tournent dans les moments clés me correspond vraiment."
+};
+
+// Pour chaque itemId, pairId de la 2e occurrence (détecté à l'initialisation)
+const SECOND_OCC = {}; // itemId → pairId
+
+// ================================================================
 // STATE
 // ================================================================
 let userInfo = {};
@@ -557,6 +608,18 @@ let PAIR_FLIPPED   = {};
 DISC_BLOCKS.forEach(b => discAns[b.id] = {most:null, least:null});
 PAIRS_DATA.forEach(p => pairAns[p.id] = null);
 VALUES_ITEMS.forEach(i => valAns[i.id] = null);
+
+// Calcul des 2e occurrences de chaque itemId dans PAIRS_DATA (ordre fixe)
+(function(){
+  const seen = {};
+  PAIRS_DATA.forEach(p => {
+    [p.a, p.b].forEach(side => {
+      const k = side.itemId;
+      if(!seen[k]) seen[k] = p.id;
+      else if(!SECOND_OCC[k]) SECOND_OCC[k] = p.id;
+    });
+  });
+})();
 
 // ================================================================
 // SCREENS
@@ -712,6 +775,9 @@ function renderPair(idx){
   const right   = flipped ? pair.a : pair.b;
   const leftItem  = VALUES_ITEMS.find(i => i.id === left.itemId);
   const rightItem = VALUES_ITEMS.find(i => i.id === right.itemId);
+  // Version B si c'est la 2e occurrence de cet itemId dans PAIRS_DATA
+  const leftText  = (SECOND_OCC[left.itemId]  === pair.id && VALUES_ITEMS_B[left.itemId])  ? VALUES_ITEMS_B[left.itemId]  : leftItem.t;
+  const rightText = (SECOND_OCC[right.itemId] === pair.id && VALUES_ITEMS_B[right.itemId]) ? VALUES_ITEMS_B[right.itemId] : rightItem.t;
   const chosen  = pairAns[pair.id];
   const pct     = Math.round(idx / 42 * 100);
 
@@ -727,10 +793,10 @@ function renderPair(idx){
     <div class="disc-card-sub">Cliquez sur l'affirmation qui vous ressemble le <strong>plus</strong>.</div>
     <div class="pair-wrap">
       <div class="pair-card${chosen === 'left' ? ' selected' : ''}" onclick="selPair(${pair.id},'left')">
-        « ${leftItem.t} »
+        « ${leftText} »
       </div>
       <div class="pair-card${chosen === 'right' ? ' selected' : ''}" onclick="selPair(${pair.id},'right')">
-        « ${rightItem.t} »
+        « ${rightText} »
       </div>
     </div>`;
 
