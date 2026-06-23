@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Révélys — Validation de votre accord</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green:     #82C817;
+    --green-d:   #4A7A10;
+    --green-l:   #EBF7CC;
+    --green-xl:  #F4FBE6;
+    --black:     #1A1A1A;
+    --gray:      #666666;
+    --gray-l:    #F5F5F5;
+    --border:    #DDDDDD;
+    --white:     #FFFFFF;
+    --red:       #C0392B;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: #F8FBF2;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 60px;
+    color: var(--black);
+  }
+
+  /* ── HEADER ─────────────────────────────────────── */
+  .header {
+    width: 100%;
+    max-width: 680px;
+    padding: 36px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo-badge {
+    width: 52px;
+    height: 52px;
+    background: var(--green-d);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .logo-badge svg { width: 28px; height: 28px; fill: var(--white); }
+
+  .logo-text h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--green-d);
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+
+  .logo-text p {
+    font-size: 12px;
+    color: var(--gray);
+    margin-top: 3px;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  .divider {
+    width: 100%;
+    max-width: 680px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--green) 0%, var(--green-l) 100%);
+    margin: 20px 0;
+    border-radius: 2px;
+  }
+
+  /* ── CARD ─────────────────────────────────────────── */
+  .card {
+    width: 100%;
+    max-width: 680px;
+    background: var(--white);
+    border-radius: 16px;
+    box-shadow: 0 4px 32px rgba(74,122,16,0.08), 0 1px 4px rgba(0,0,0,0.04);
+    overflow: hidden;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card-header {
+    background: var(--green-d);
+    padding: 28px 36px;
+    color: var(--white);
+  }
+
+  .card-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+  }
+
+  .card-header p {
+    font-size: 13px;
+    opacity: 0.82;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .card-body { padding: 32px 36px; }
+
+  /* ── INTRO ──────────────────────────────────────── */
+  .intro {
+    background: var(--green-xl);
+    border-left: 3px solid var(--green);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: var(--green-d);
+    line-height: 1.65;
+    margin-bottom: 28px;
+  }
+
+  /* ── FORM FIELDS ─────────────────────────────────── */
+  .field-group { margin-bottom: 20px; }
+
+  .field-group label {
+    display: block;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--gray);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .field-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--black);
+    background: var(--white);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+  }
+
+  .field-group input:focus {
+    border-color: var(--green);
+    box-shadow: 0 0 0 3px rgba(130,200,23,0.12);
+  }
+
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+  /* ── DOCUMENTS ───────────────────────────────────── */
+  .section-title {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gray);
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .doc-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 28px; }
+
+  .doc-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px 18px;
+    background: var(--gray-l);
+    border-radius: 10px;
+    border: 1.5px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .doc-item:hover { background: var(--green-xl); border-color: var(--green-l); }
+  .doc-item.checked { background: var(--green-xl); border-color: var(--green); }
+
+  .doc-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--green-d);
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .doc-icon {
+    width: 36px;
+    height: 36px;
+    background: var(--white);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  .doc-icon svg { width: 18px; height: 18px; fill: var(--green-d); }
+
+  .doc-info { flex: 1; }
+
+  .doc-info strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--black);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+
+  .doc-info span {
+    font-size: 12px;
+    color: var(--gray);
+    line-height: 1.5;
+  }
+
+  .check-mark {
+    width: 22px;
+    height: 22px;
+    background: var(--green);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.2s;
+    flex-shrink: 0;
+  }
+
+  .doc-item.checked .check-mark { opacity: 1; }
+  .check-mark svg { width: 12px; height: 12px; fill: white; }
+
+  /* ── SIGNATURE ───────────────────────────────────── */
+  .signature-box {
+    background: #FFFDE7;
+    border: 1px solid #F0E060;
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 28px;
+    font-size: 12.5px;
+    color: #7A6A00;
+    line-height: 1.65;
+  }
+
+  .signature-box strong { display: block; margin-bottom: 4px; font-size: 13px; }
+
+  /* ── ERROR ───────────────────────────────────────── */
+  .err-msg {
+    display: none;
+    background: #FEF0EF;
+    border: 1px solid #F5C6C2;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: var(--red);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .err-msg.show { display: block; }
+
+  /* ── BUTTON ──────────────────────────────────────── */
+  .btn-submit {
+    width: 100%;
+    padding: 16px 24px;
+    background: var(--green-d);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    box-shadow: 0 4px 16px rgba(74,122,16,0.25);
+  }
+
+  .btn-submit:hover { background: #3D6A0D; box-shadow: 0 6px 20px rgba(74,122,16,0.35); }
+  .btn-submit:active { transform: scale(0.99); }
+  .btn-submit:disabled { background: #AAAAAA; box-shadow: none; cursor: not-allowed; }
+  .btn-submit svg { width: 18px; height: 18px; fill: white; }
+
+  /* ── MERCI ───────────────────────────────────────── */
+  .thankyou {
+    display: none;
+    text-align: center;
+    padding: 48px 36px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .ty-icon {
+    width: 72px;
+    height: 72px;
+    background: var(--green-l);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 24px;
+  }
+
+  .ty-icon svg { width: 36px; height: 36px; fill: var(--green-d); }
+
+  .ty-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--green-d);
+    margin-bottom: 12px;
+  }
+
+  .ty-text {
+    font-size: 15px;
+    color: var(--gray);
+    line-height: 1.7;
+    max-width: 420px;
+    margin: 0 auto 20px;
+  }
+
+  .ty-date {
+    font-size: 12px;
+    color: var(--gray);
+    background: var(--gray-l);
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 20px;
+  }
+
+  /* ── FOOTER ──────────────────────────────────────── */
+  .footer {
+    width: 100%;
+    max-width: 680px;
+    margin-top: 24px;
+    text-align: center;
+    font-size: 12px;
+    color: #AAAAAA;
+    line-height: 1.7;
+  }
+
+  /* ── RESPONSIVE ──────────────────────────────────── */
+  @media (max-width: 520px) {
+    .card-header { padding: 22px 22px; }
+    .card-body   { padding: 24px 22px; }
+    .field-row   { grid-template-columns: 1fr; }
+    .header      { padding-top: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="logo-badge">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+  </div>
+  <div class="logo-text">
+    <h1>Révélys</h1>
+    <p>NG Consultants — Nathalie LEGENDRE</p>
+  </div>
+</div>
+<div class="divider"></div>
+
+<!-- CARD -->
+<div class="card" id="card-form">
+  <div class="card-header">
+    <h2>Validation de votre accord</h2>
+    <p>Avant de commencer votre diagnostic, merci de confirmer que vous avez pris connaissance des documents qui vous ont été transmis et que vous les acceptez.</p>
+  </div>
+
+  <div class="card-body">
+
+    <div class="intro">
+      Trois documents vous ont été transmis par email en pièces jointes. Veuillez les lire attentivement, cocher chaque case ci-dessous, puis valider en un clic.
+    </div>
+
+    <!-- IDENTITÉ -->
+    <div class="section-title">Vos coordonnées</div>
+    <div class="field-row">
+      <div class="field-group">
+        <label>Prénom *</label>
+        <input type="text" id="f-prenom" placeholder="Votre prénom" autocomplete="given-name">
+      </div>
+      <div class="field-group">
+        <label>Nom *</label>
+        <input type="text" id="f-nom" placeholder="Votre nom" autocomplete="family-name">
+      </div>
+    </div>
+    <div class="field-group">
+      <label>Adresse email *</label>
+      <input type="email" id="f-email" placeholder="votre@email.fr" autocomplete="email">
+    </div>
+
+    <!-- DOCUMENTS -->
+    <div class="section-title" style="margin-top:28px;">Documents à valider</div>
+    <div class="doc-list">
+
+      <label class="doc-item" id="item-rgpd">
+        <input type="checkbox" id="cb-rgpd" onchange="toggleCheck('item-rgpd','cb-rgpd')">
+        <div class="doc-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l6 2.67V11c0 3.93-2.71 7.6-6 8.93-3.29-1.33-6-5-6-8.93V7.67L12 5z"/></svg>
+        </div>
+        <div class="doc-info">
+          <strong>Politique de Confidentialité & RGPD</strong>
+          <span>J'ai lu et j'accepte la politique de traitement de mes données personnelles conformément au RGPD.</span>
+        </div>
+        <div class="check-mark">
+          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+      </label>
+
+      <label class="doc-item" id="item-cgv">
+        <input type="checkbox" id="cb-cgv" onchange="toggleCheck('item-cgv','cb-cgv')">
+        <div class="doc-icon">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm-1 7V3.5L18.5 9H13zM8 16h8v2H8v-2zm0-4h8v2H8v-2zm0-4h5v2H8V8z"/></svg>
+        </div>
+        <div class="doc-info">
+          <strong>Conditions Générales de Vente</strong>
+          <span>J'ai lu et j'accepte les CGV applicables aux particuliers de NG Consultants — Révélys.</span>
+        </div>
+        <div class="check-mark">
+          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+      </label>
+
+      <label class="doc-item" id="item-pf">
+        <input type="checkbox" id="cb-pf" onchange="toggleCheck('item-pf','cb-pf')">
+        <div class="doc-icon">
+          <svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>
+        </div>
+        <div class="doc-info">
+          <strong>Facture Pro Forma</strong>
+          <span>J'ai pris connaissance de la facture pro forma et je confirme ma commande au tarif indiqué (290 € TTC).</span>
+        </div>
+        <div class="check-mark">
+          <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+        </div>
+      </label>
+
+    </div>
+
+    <!-- SIGNATURE -->
+    <div class="signature-box">
+      <strong>⚠ Valeur de signature électronique</strong>
+      En cochant les cases ci-dessus et en cliquant sur "Je valide et signe", vous attestez sur l'honneur avoir lu les documents transmis et les accepter. Cette validation horodatée sera conservée par NG Consultants à titre de preuve.
+    </div>
+
+    <!-- ERREUR -->
+    <div class="err-msg" id="err-msg">Merci de compléter tous les champs et de cocher les trois documents avant de valider.</div>
+
+    <!-- BOUTON -->
+    <button class="btn-submit" id="btn-submit" onclick="submitConsent()">
+      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+      Je valide et signe
+    </button>
+
+  </div>
+</div>
+
+<!-- MERCI -->
+<div class="card" id="card-thanks" style="display:none;">
+  <div class="thankyou">
+    <div class="ty-icon">
+      <svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    </div>
+    <div class="ty-name" id="ty-name"></div>
+    <p class="ty-text">
+      Votre accord a bien été enregistré. Vous allez recevoir dans les prochaines heures le lien d'accès à votre questionnaire Révélys.<br><br>
+      Merci de votre confiance !
+    </p>
+    <div class="ty-date" id="ty-date"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  NG Consultants — Nathalie LEGENDRE &nbsp;|&nbsp; ng-consultants@orange.fr<br>
+  Révélys — Diagnostic comportemental et motivationnel &nbsp;|&nbsp; <a href="https://legendre2785.github.io/Revelys-by-NG/" style="color:#82C817;text-decoration:none;">legendre2785.github.io/Revelys-by-NG</a>
+</div>
+
+<script>
+const FORMSPREE = 'https://formspree.io/f/mojbjqgj'; // ← même endpoint ou nouveau form Formspree
+
+function toggleCheck(itemId, cbId) {
+  const item = document.getElementById(itemId);
+  item.classList.toggle('checked', document.getElementById(cbId).checked);
+}
+
+async function submitConsent() {
+  const prenom = document.getElementById('f-prenom').value.trim();
+  const nom    = document.getElementById('f-nom').value.trim();
+  const email  = document.getElementById('f-email').value.trim();
+  const rgpd   = document.getElementById('cb-rgpd').checked;
+  const cgv    = document.getElementById('cb-cgv').checked;
+  const pf     = document.getElementById('cb-pf').checked;
+  const err    = document.getElementById('err-msg');
+
+  const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
+
+  if (!prenom || !nom || !email || !emailOk || !rgpd || !cgv || !pf) {
+    err.classList.add('show');
+    return;
+  }
+  err.classList.remove('show');
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Envoi en cours…';
+
+  const now = new Date();
+  const dateStr = now.toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
+  const timeStr = now.toLocaleTimeString('fr-FR', { hour:'2-digit', minute:'2-digit' });
+
+  const payload = {
+    _subject: `[Révélys] Accord signé — ${prenom} ${nom}`,
+    _replyto: email,
+    '--- CONSENTEMENT RÉVÉLYS ---': '---',
+    Prénom: prenom,
+    Nom: nom,
+    Email: email,
+    'Date de validation': `${dateStr} à ${timeStr}`,
+    'Politique RGPD acceptée': rgpd ? 'OUI ✓' : 'NON',
+    'CGV acceptées': cgv ? 'OUI ✓' : 'NON',
+    'Facture Pro Forma acceptée': pf ? 'OUI ✓' : 'NON',
+    'Validation horodatée': now.toISOString(),
+  };
+
+  try {
+    const resp = await fetch(FORMSPREE, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    if (!resp.ok) {
+      const errData = await resp.json().catch(() => ({}));
+      btn.disabled = false;
+      btn.textContent = 'Je valide et signe';
+      err.textContent = `Erreur d'envoi (${resp.status}). Merci de contacter ng-consultants@orange.fr.`;
+      err.classList.add('show');
+      return;
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Je valide et signe';
+    err.textContent = 'Problème réseau. Vérifiez votre connexion et réessayez.';
+    err.classList.add('show');
+    return;
+  }
+
+  // SUCCÈS
+  document.getElementById('card-form').style.display = 'none';
+  const thanks = document.getElementById('card-thanks');
+  thanks.style.display = 'block';
+  document.getElementById('ty-name').textContent = prenom + ' ' + nom;
+  document.getElementById('ty-date').textContent = `Accord enregistré le ${dateStr} à ${timeStr}`;
+}
+</script>
+</body>
+</html>
